@@ -1,6 +1,5 @@
 let productQuantityControls = document.querySelectorAll('.product__quantity-controls');
 let productAdd = document.querySelectorAll('.product__add');
-let arr = [];
 let bool = true;
 let num;
 
@@ -35,31 +34,29 @@ for (let i = 0; i < productAdd.length; i++) {
     })
 }
 
-let cartProduct = document.querySelectorAll('.cart__product');
-for(let i = 0; i < cartProduct.length; i++) {
-    arr.push(cartProduct[i].dataset.id);
-}
-
 function addProduct(event) {
     let cartProducts = document.querySelector('.cart__products');
-    let cartProduct = document.querySelectorAll('.cart__product');
     let productQuantity = event.target.closest('.product__quantity');
     let productQuantityValue = productQuantity.querySelector('.product__quantity-value');
     let num = Number(productQuantityValue.textContent);
     let product = productQuantity.closest('.product');
+    let count = 0, sum = 0;
 
-    if (arr.includes(product.dataset.id)) {
-        console.log('true');
-        let attribute = cartProduct[0].getAttribute('data-id');
-        console.log(attribute);
+    let cartProduct = document.querySelectorAll('.cart__product');
+    let cartProductArray = Array.from(cartProduct);
+    const productFromCard = cartProductArray.find((element) => element.dataset.id == product.dataset.id);
+
+    if (productFromCard) {
+        let cartProductCount = productFromCard.querySelector('.cart__product-count');
+        count = Number(cartProductCount.textContent);
+        sum = count + num;
+        cartProductCount.textContent = sum;
     } else {
-        console.log('false');
         cartProducts.insertAdjacentHTML('beforeEnd',
         '<div class="cart__product" data-id=' + product.dataset.id + '>'
         +'<img class="cart__product-image" src=' + product.querySelector('.product__image').src + '>'
         +'<div class="cart__product-count">' + num + '</div>' 
         + '</div>');
-        arr.push(product.dataset.id);
     }
     event.preventDefault();
     return;

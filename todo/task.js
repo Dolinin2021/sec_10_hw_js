@@ -1,25 +1,18 @@
 const input = document.querySelector('.tasks__input');
 const tasksList = document.querySelector('.tasks__list');
-
-function resetValue(elem)
-{
-  elem.value = "";
-}
+const button = document.querySelector('.tasks__add');
 
 function addRecord(event){
-  if (this.value.length === 0) {
+  if (input.value.trim().length === 0) {
     return;
   }
-  if (event.keyCode == 13) {
-    console.log(this.value);
-    tasksList.insertAdjacentHTML('beforeEnd',
-    `<div class="task">
-      <div class="task__title">`+ this.value +`</div>
-      <a href="#" class="task__remove">&times;</a>
-    </div>`)
-    resetValue(input);
-    event.preventDefault();
-  }
+  tasksList.insertAdjacentHTML('beforeEnd',
+  `<div class="task">
+    <div class="task__title">`+ input.value +`</div>
+    <a href="#" class="task__remove">&times;</a>
+  </div>`)
+  input.value = '';
+  event.preventDefault();
 };
 
 function deleteRecord(event) {
@@ -29,5 +22,5 @@ function deleteRecord(event) {
   }
 }
 
-input.addEventListener('keyup', addRecord);
 tasksList.addEventListener('click', deleteRecord);
+button.addEventListener('click', addRecord);
